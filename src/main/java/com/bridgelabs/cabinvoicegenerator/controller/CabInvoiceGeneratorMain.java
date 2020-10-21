@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.bridgelabs.cabinvoicegenerator.model.InvoiceGenerator;
+import com.bridgelabs.cabinvoicegenerator.model.InvoiceService;
 import com.bridgelabs.cabinvoicegenerator.model.Ride;
 
 public class CabInvoiceGeneratorMain {
@@ -26,17 +27,18 @@ public class CabInvoiceGeneratorMain {
 
 	public Double calculateAggregateFareForMulltipleRides(Ride[] rides) {
 		double totalCost = 0;
-		for (Ride ride : rides) {
-			double cost = ride.getDistance() * COST_PER_KM + ride.getMinutes() * COST_PER_MINUTE;
-			if (cost < MINIMUM_FARE)
-				cost = MINIMUM_FARE;
-			totalCost += cost;
-		}
+		for (Ride ride : rides)
+			totalCost += calculateTotalFare(ride.getDistance(), ride.getMinutes());
 		return totalCost;
 	}
 
 	public InvoiceGenerator generateInvoiceForMulltipleRides(Ride[] rides) {
 		double totalCost = calculateAggregateFareForMulltipleRides(rides);
 		return new InvoiceGenerator(rides.length, totalCost, totalCost / rides.length);
+	}
+
+	public InvoiceGenerator generateInvoiceForGivenUserId(String userId) {
+		InvoiceService invoiceService = new InvoiceService();
+		return generateInvoiceForMulltipleRides(invoiceService.getUserRidesArray(userId));
 	}
 }
