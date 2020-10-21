@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import com.bridgelabs.cabinvoicegenerator.controller.CabInvoiceGeneratorMain;
 import com.bridgelabs.cabinvoicegenerator.model.InvoiceGenerator;
+import com.bridgelabs.cabinvoicegenerator.model.InvoiceService;
 import com.bridgelabs.cabinvoicegenerator.model.Ride;
 
 public class CabInvoiceGeneratorTest {
@@ -31,6 +32,17 @@ public class CabInvoiceGeneratorTest {
 	public void givenMultipleRides_ShouldReturnGeneratedInvoice() {
 		CabInvoiceGeneratorMain cabInvoiceGeneratorMain = new CabInvoiceGeneratorMain();
 		Ride rides[] = { new Ride(10.0, 5.0), new Ride(0.2, 1.0), new Ride(5.0, 1.0) };
+		InvoiceGenerator invoice = cabInvoiceGeneratorMain.generateInvoiceForMulltipleRides(rides);
+		InvoiceGenerator invoiceExpected = new InvoiceGenerator(3, 161.0, 161.0 / 3);
+		Assert.assertEquals(invoiceExpected, invoice);
+	}
+
+	@Test
+	public void givenUserId_ShouldReturnGeneratedInvoiceForThatUser() {
+		CabInvoiceGeneratorMain cabInvoiceGeneratorMain = new CabInvoiceGeneratorMain();
+		InvoiceService invoiceService = new InvoiceService();
+		Ride rides[] = { new Ride(10.0, 5.0), new Ride(0.2, 1.0), new Ride(5.0, 1.0) };
+		invoiceService.addRideDetails("user1", rides);
 		InvoiceGenerator invoice = cabInvoiceGeneratorMain.generateInvoiceForMulltipleRides(rides);
 		InvoiceGenerator invoiceExpected = new InvoiceGenerator(3, 161.0, 161.0 / 3);
 		Assert.assertEquals(invoiceExpected, invoice);
