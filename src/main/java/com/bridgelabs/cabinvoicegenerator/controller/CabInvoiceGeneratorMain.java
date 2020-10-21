@@ -3,6 +3,8 @@ package com.bridgelabs.cabinvoicegenerator.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.bridgelabs.cabinvoicegenerator.model.Ride;
+
 public class CabInvoiceGeneratorMain {
 
 	private static final Logger LOGGER = LogManager.getLogger(CabInvoiceGeneratorMain.class);
@@ -19,5 +21,16 @@ public class CabInvoiceGeneratorMain {
 		if (distance * COST_PER_KM + minutes * COST_PER_MINUTE < MINIMUM_FARE)
 			return MINIMUM_FARE;
 		return distance * COST_PER_KM + minutes * COST_PER_MINUTE;
+	}
+
+	public Double calculateAggregateFareForMulltipleides(Ride[] rides) {
+		double totalCost = 0;
+		for (Ride ride : rides) {
+			double cost = ride.getDistance() * COST_PER_KM + ride.getMinutes() * COST_PER_MINUTE;
+			if (cost < MINIMUM_FARE)
+				cost = MINIMUM_FARE;
+			totalCost += cost;
+		}
+		return totalCost;
 	}
 }
