@@ -35,5 +35,4 @@ public class CabInvoiceGeneratorTest {
 		InvoiceGenerator invoiceExpected = new InvoiceGenerator(3, 161.0, 161.0 / 3);
 		Assert.assertEquals(invoiceExpected, invoice);
 	}
-
 }
