@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bridgelabs.cabinvoicegenerator.controller.CabInvoiceGeneratorMain;
+import com.bridgelabs.cabinvoicegenerator.model.Ride;
 
 public class CabInvoiceGeneratorTest {
 
@@ -15,6 +16,14 @@ public class CabInvoiceGeneratorTest {
 
 		cost = cabInvoiceGeneratorMain.calculateTotalFare(0.2, 1.0);
 		Assert.assertEquals(Double.valueOf(5.0), cost);
+	}
+
+	@Test
+	public void gvienMultipleRides_ShouldReturnAggregateFare() {
+		CabInvoiceGeneratorMain cabInvoiceGeneratorMain = new CabInvoiceGeneratorMain();
+		Ride rides[] = { new Ride(10.0, 5.0), new Ride(0.2, 1.0), new Ride(5.0, 1.0) };
+		Double cost = cabInvoiceGeneratorMain.calculateAggregateFareForMulltipleides(rides);
+		Assert.assertEquals(Double.valueOf(161.0), cost);
 	}
 
 }
