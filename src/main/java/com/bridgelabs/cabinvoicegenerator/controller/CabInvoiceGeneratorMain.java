@@ -3,6 +3,7 @@ package com.bridgelabs.cabinvoicegenerator.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.bridgelabs.cabinvoicegenerator.model.InvoiceGenerator;
 import com.bridgelabs.cabinvoicegenerator.model.Ride;
 
 public class CabInvoiceGeneratorMain {
@@ -23,7 +24,7 @@ public class CabInvoiceGeneratorMain {
 		return distance * COST_PER_KM + minutes * COST_PER_MINUTE;
 	}
 
-	public Double calculateAggregateFareForMulltipleides(Ride[] rides) {
+	public Double calculateAggregateFareForMulltipleRides(Ride[] rides) {
 		double totalCost = 0;
 		for (Ride ride : rides) {
 			double cost = ride.getDistance() * COST_PER_KM + ride.getMinutes() * COST_PER_MINUTE;
@@ -32,5 +33,10 @@ public class CabInvoiceGeneratorMain {
 			totalCost += cost;
 		}
 		return totalCost;
+	}
+
+	public InvoiceGenerator generateInvoiceForMulltipleRides(Ride[] rides) {
+		double totalCost = calculateAggregateFareForMulltipleRides(rides);
+		return new InvoiceGenerator(rides.length, totalCost, totalCost / rides.length);
 	}
 }
